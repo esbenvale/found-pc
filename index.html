@@ -1,0 +1,2065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FOUND: PC</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  overflow:hidden;
+  background:#101426;
+  color:white;
+}
+
+button{
+  border:0;
+  cursor:pointer;
+  color:white;
+  font-weight:700;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.screen{
+  width:100vw;
+  height:100vh;
+}
+
+/* ================= TITLE ================= */
+
+#titleScreen{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle at 20% 20%,#ff5ca8 0,transparent 28%),
+    radial-gradient(circle at 80% 30%,#5b7cff 0,transparent 30%),
+    radial-gradient(circle at 50% 90%,#00d4ff 0,transparent 35%),
+    linear-gradient(135deg,#17152f,#071525);
+}
+
+.titleBox{
+  width:min(92%,560px);
+  padding:55px 35px;
+  text-align:center;
+  border-radius:32px;
+  background:rgba(255,255,255,.11);
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 30px 100px rgba(0,0,0,.45);
+  backdrop-filter:blur(20px);
+}
+
+.logo{
+  font-size:clamp(42px,10vw,78px);
+  font-weight:900;
+  letter-spacing:4px;
+  background:linear-gradient(90deg,#ff70b7,#7c8cff,#54e7ff);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.subtitle{
+  margin-top:12px;
+  color:#cfd6ff;
+  letter-spacing:3px;
+  font-size:13px;
+}
+
+.menu{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:40px;
+}
+
+.menu button{
+  padding:17px;
+  border-radius:16px;
+  font-size:17px;
+  background:linear-gradient(135deg,#ff4f9a,#7b6cff);
+  box-shadow:0 10px 25px rgba(120,90,255,.25);
+  transition:.2s;
+}
+
+.menu button:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.1);
+}
+
+.menu button.secondary{
+  background:rgba(255,255,255,.12);
+}
+
+/* ================= CASE ================= */
+
+#caseScreen{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle at 15% 25%,#7b4cff 0,transparent 30%),
+    radial-gradient(circle at 85% 75%,#ff4f9a 0,transparent 30%),
+    linear-gradient(135deg,#10142d,#07101d);
+}
+
+.caseCard{
+  width:min(92%,620px);
+  padding:35px;
+  border-radius:28px;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(20px);
+  box-shadow:0 30px 90px rgba(0,0,0,.45);
+}
+
+.caseTop{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.caseTop h1{
+  font-size:34px;
+  margin-bottom:8px;
+}
+
+.caseTop p{
+  color:#b9c2df;
+}
+
+.caseInfo{
+  display:grid;
+  gap:12px;
+}
+
+.infoRow{
+  padding:16px;
+  border-radius:15px;
+  background:rgba(255,255,255,.08);
+}
+
+.infoLabel{
+  display:block;
+  color:#9da8c9;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:5px;
+}
+
+.infoValue{
+  font-size:18px;
+  font-weight:700;
+}
+
+.caseMystery{
+  margin-top:20px;
+  padding:18px;
+  border-radius:16px;
+  background:linear-gradient(135deg,rgba(255,84,151,.18),rgba(91,108,255,.18));
+  color:#e9edff;
+  line-height:1.5;
+}
+
+.enterBtn{
+  width:100%;
+  margin-top:25px;
+  padding:17px;
+  border-radius:16px;
+  background:linear-gradient(90deg,#ff579e,#695cff);
+  font-size:17px;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(8px);
+}
+
+.modalBox{
+  width:min(90%,600px);
+  max-height:85vh;
+  overflow:auto;
+  padding:30px;
+  border-radius:25px;
+  background:#171d35;
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 30px 100px #000;
+}
+
+.modalBox h2{
+  margin-bottom:18px;
+}
+
+.modalBox p,
+.modalBox li{
+  color:#cbd3ed;
+  line-height:1.6;
+}
+
+.modalBox ul{
+  padding-left:22px;
+}
+
+.closeBtn{
+  margin-top:20px;
+  width:100%;
+  padding:14px;
+  border-radius:13px;
+  background:#5965ff;
+}
+
+/* ================= DESKTOP CSS ================= */
+
+#desktop{
+  position:relative;
+  background:
+    radial-gradient(circle at 15% 15%,rgba(255,93,173,.5),transparent 25%),
+    radial-gradient(circle at 85% 20%,rgba(82,131,255,.5),transparent 28%),
+    radial-gradient(circle at 50% 100%,rgba(0,211,255,.35),transparent 35%),
+    linear-gradient(135deg,#17204a,#071225);
+}
+
+.topbar{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:48px;
+  padding:0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(8,12,30,.6);
+  border-bottom:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(15px);
+  z-index:20;
+}
+
+.topbarTitle{
+  font-weight:800;
+  letter-spacing:1px;
+}
+
+#clock{
+  color:#dce2ff;
+  font-size:14px;
+}
+
+.desktopApps{
+  position:absolute;
+  top:70px;
+  left:25px;
+  right:25px;
+  bottom:85px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(95px,110px));
+  grid-auto-rows:105px;
+  gap:18px;
+  align-content:start;
+}
+
+.appIcon{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border-radius:20px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.1);
+  transition:.2s;
+  user-select:none;
+}
+
+.appIcon:hover{
+  transform:translateY(-4px) scale(1.03);
+  background:rgba(255,255,255,.15);
+}
+
+.iconBox{
+  width:50px;
+  height:50px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:15px;
+  font-size:25px;
+  box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
+
+.appName{
+  font-size:12px;
+  color:#edf0ff;
+}
+
+.taskbar{
+  position:absolute;
+  left:15px;
+  right:15px;
+  bottom:15px;
+  height:55px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:7px;
+  border-radius:20px;
+  background:rgba(8,12,30,.7);
+  border:1px solid rgba(255,255,255,.13);
+  backdrop-filter:blur(18px);
+  z-index:30;
+}
+
+.taskBtn{
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  background:rgba(255,255,255,.1);
+  font-size:19px;
+}
+
+.taskBtn:hover{
+  background:rgba(255,255,255,.2);
+}
+
+/* ================= WINDOW ================= */
+
+.window{
+  position:absolute;
+  z-index:100;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:min(90vw,760px);
+  height:min(75vh,600px);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  border-radius:22px;
+  background:#11182c;
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 30px 100px rgba(0,0,0,.65);
+}
+
+.windowHead{
+  height:48px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 15px;
+  background:rgba(255,255,255,.07);
+}
+
+.windowTitle{
+  font-weight:800;
+}
+
+.windowClose{
+  width:30px;
+  height:30px;
+  border-radius:9px;
+  background:#ff557d;
+}
+
+.windowBody{
+  flex:1;
+  overflow:auto;
+  padding:20px;
+}
+
+.card{
+  padding:16px;
+  border-radius:15px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  margin-bottom:12px;
+}
+
+.card h3{
+  margin-bottom:7px;
+}
+
+.muted{
+  color:#9ca8c9;
+}
+
+.message{
+  padding:14px;
+  margin-bottom:10px;
+  border-radius:14px;
+  background:rgba(255,255,255,.06);
+}
+
+.message .who{
+  font-weight:800;
+  color:#7ee7ff;
+  margin-bottom:5px;
+}
+
+.mail{
+  padding:15px;
+  border-radius:14px;
+  margin-bottom:10px;
+  background:rgba(255,255,255,.06);
+}
+
+.mail strong{
+  display:block;
+  margin-bottom:6px;
+}
+
+.photoGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:12px;
+}
+
+.photo{
+  min-height:130px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:15px;
+  border-radius:17px;
+  font-weight:700;
+  background:linear-gradient(135deg,#5d62ff,#ef65ad);
+}
+
+.timelineItem{
+  position:relative;
+  padding:15px 15px 15px 28px;
+  margin-bottom:10px;
+  border-left:3px solid #6e7cff;
+  background:rgba(255,255,255,.05);
+  border-radius:0 13px 13px 0;
+}
+
+.hint{
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:14px;
+  background:rgba(255,206,87,.1);
+  border:1px solid rgba(255,206,87,.2);
+}
+
+.actionBtn{
+  padding:12px 17px;
+  border-radius:12px;
+  background:#5966ff;
+  margin:4px;
+}
+
+.actionBtn.pink{
+  background:#e95396;
+}
+
+.actionBtn.green{
+  background:#35b982;
+}
+
+.actionBtn.dark{
+  background:#303951;
+}
+
+.input{
+  width:100%;
+  padding:13px;
+  margin:8px 0;
+  border-radius:11px;
+  border:1px solid rgba(255,255,255,.12);
+  background:#090f20;
+  color:white;
+  outline:none;
+}
+
+.deductionGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:10px;
+}
+
+.deductionOption{
+  padding:14px;
+  border-radius:13px;
+  background:rgba(255,255,255,.07);
+  cursor:pointer;
+}
+
+.deductionOption:hover{
+  background:rgba(255,255,255,.14);
+}
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:85px;
+  z-index:2000;
+  padding:14px 18px;
+  border-radius:14px;
+  background:#171d35;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 15px 40px #0008;
+  opacity:0;
+  transform:translateY(15px);
+  pointer-events:none;
+  transition:.25s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.answerBox{
+  padding:20px;
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(69,217,158,.12),rgba(88,101,255,.12));
+  border:1px solid rgba(100,220,180,.2);
+  line-height:1.6;
+}
+
+@media(max-width:600px){
+  .titleBox{
+    padding:40px 22px;
+  }
+
+  .caseCard{
+    padding:23px;
+  }
+
+  .desktopApps{
+    left:12px;
+    right:12px;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+
+  .appIcon{
+    min-width:0;
+  }
+
+  .window{
+    width:96vw;
+    height:78vh;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= TITLE SCREEN ================= -->
+
+<section id="titleScreen" class="screen">
+  <div class="titleBox">
+    <div class="logo">FOUND: PC</div>
+    <div class="subtitle">A PROCEDURAL MYSTERY</div>
+
+    <div class="menu">
+      <button onclick="startGame()">PLAY</button>
+      <button class="secondary" onclick="showHowToPlay()">HOW TO PLAY</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CASE SCREEN ================= -->
+
+<section id="caseScreen" class="screen hidden">
+  <div class="caseCard">
+
+    <div class="caseTop">
+      <h1>CASE FOUND</h1>
+      <p>A computer has been left behind.</p>
+    </div>
+
+    <div class="caseInfo">
+
+      <div class="infoRow">
+        <span class="infoLabel">Owner</span>
+        <span class="infoValue" id="ownerName">—</span>
+      </div>
+
+      <div class="infoRow">
+        <span class="infoLabel">Occupation</span>
+        <span class="infoValue" id="ownerJob">—</span>
+      </div>
+
+      <div class="infoRow">
+        <span class="infoLabel">Case Number</span>
+        <span class="infoValue" id="caseId">—</span>
+      </div>
+
+    </div>
+
+    <div class="caseMystery" id="caseMystery">
+      Investigate this PC and reconstruct what happened.
+    </div>
+
+    <button class="enterBtn" onclick="enterPC()">
+      ENTER PC
+    </button>
+
+  </div>
+</section>
+
+<!-- ================= HOW TO PLAY MODAL ================= -->
+
+<div id="howModal" class="modal hidden">
+  <div class="modalBox">
+    <h2>HOW TO PLAY</h2>
+
+    <ul>
+      <li>Every case is procedurally generated.</li>
+      <li>The owner, contacts, files, messages and mystery change between cases.</li>
+      <li>Open the apps on the computer and investigate the evidence.</li>
+      <li>Look for contradictions between messages, files, photos and the timeline.</li>
+      <li>Use hints if you get stuck.</li>
+      <li>Use the Investigation app when you think you understand the case.</li>
+      <li>The answer is generated from the hidden case state.</li>
+    </ul>
+
+    <button class="closeBtn" onclick="hideHowToPlay()">CLOSE</button>
+  </div>
+</div>
+<!-- ================= DESKTOP ================= -->
+
+<section id="desktop" class="screen hidden">
+
+  <div class="topbar">
+    <div class="topbarTitle">FOUND: PC</div>
+    <div id="clock">00:00</div>
+  </div>
+
+  <div id="desktopApps" class="desktopApps"></div>
+
+  <div class="taskbar">
+    <button class="taskBtn" onclick="openApp('documents')">📁</button>
+    <button class="taskBtn" onclick="openApp('browser')">🌐</button>
+    <button class="taskBtn" onclick="openApp('messages')">💬</button>
+    <button class="taskBtn" onclick="openApp('mail')">✉️</button>
+    <button class="taskBtn" onclick="openApp('photos')">📸</button>
+    <button class="taskBtn" onclick="openApp('investigation')">🕵️</button>
+  </div>
+
+</section>
+
+<!-- ================= DYNAMIC WINDOW ================= -->
+
+<div id="appWindow" class="window hidden">
+  <div class="windowHead">
+    <div class="windowTitle" id="windowTitle">Application</div>
+    <button class="windowClose" onclick="closeWindow()">×</button>
+  </div>
+
+  <div class="windowBody" id="windowBody"></div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+/* =========================================================
+   FOUND: PC
+   SEGMENT 2
+   APPLICATION DATA + CASE GENERATION
+   ========================================================= */
+
+let CASE = null;
+let rng = null;
+
+/* ================= DATA ================= */
+
+const names = [
+  "Maya Sen",
+  "Arjun Rao",
+  "Nora Vale",
+  "Kabir Das",
+  "Ira Mehta",
+  "Dev Malhotra",
+  "Rhea Kapoor",
+  "Neil Bose",
+  "Tara Roy",
+  "Ayaan Sen",
+  "Mira Dutta",
+  "Zayn Khan"
+];
+
+const jobs = [
+  "graphic designer",
+  "student",
+  "photographer",
+  "game developer",
+  "journalist",
+  "musician",
+  "architect",
+  "research assistant",
+  "illustrator",
+  "video editor"
+];
+
+const places = [
+  "Lumen Café",
+  "Northbridge Station",
+  "Blue Lantern Library",
+  "Riverside Park",
+  "Orchid Mall",
+  "Maple Street",
+  "The Old Cinema",
+  "Harbour View"
+];
+
+const items = [
+  "silver key",
+  "red notebook",
+  "memory card",
+  "sealed envelope",
+  "small blue drive",
+  "black USB stick"
+];
+
+const passwords = [
+  "orchid",
+  "midnight",
+  "lantern",
+  "bluebird",
+  "maple",
+  "starlight",
+  "rainfall",
+  "comet"
+];
+
+const contacts = [
+  "Rohan",
+  "Nisha",
+  "Sam",
+  "Alex",
+  "Priya",
+  "Dev",
+  "Ishaan",
+  "Mira"
+];
+
+const mysteryTypes = [
+  "missing object",
+  "secret meeting",
+  "false alibi",
+  "anonymous messages"
+];
+
+const apps = [
+  ["documents","📁","Documents","#ffb84d"],
+  ["browser","🌐","Browser","#55b9ff"],
+  ["messages","💬","Messages","#66e6a0"],
+  ["mail","✉️","Mail","#ff6fae"],
+  ["photos","📸","Photos","#a67cff"],
+  ["recycle","🗑️","Recycle Bin","#7784a8"],
+  ["vault","🔐","Vault","#ffd15c"],
+  ["notes","📝","Notes","#63d7ff"],
+  ["timeline","🕒","Timeline","#ff8d66"],
+  ["investigation","🕵️","Investigate","#ff638b"]
+];
+
+/* ================= RNG ================= */
+
+function RNG(seed){
+  let state=seed>>>0;
+
+  return function(){
+    state += 0x6D2B79F5;
+
+    let t=state;
+
+    t=Math.imul(t^(t>>>15),t|1);
+    t^=t+Math.imul(t^(t>>>7),t|61);
+
+    return ((t^(t>>>14))>>>0)/4294967296;
+  };
+}
+
+function pick(random,array){
+  return array[Math.floor(random()*array.length)];
+}
+
+function rand(random,min,max){
+  return Math.floor(random()*(max-min+1))+min;
+}
+
+/* ================= CASE GENERATOR ================= */
+
+function generateCase(seed){
+
+  rng=RNG(seed);
+
+  const owner=pick(rng,names);
+  const contact=pick(rng,contacts);
+  const job=pick(rng,jobs);
+
+  const place=pick(rng,places);
+
+  let secondPlace=pick(rng,places);
+
+  while(secondPlace===place){
+    secondPlace=pick(rng,places);
+  }
+
+  const item=pick(rng,items);
+  const password=pick(rng,passwords);
+  const mystery=pick(rng,mysteryTypes);
+
+  const day=rand(rng,1,28);
+  const hour=rand(rng,17,21);
+  const minute=rand(rng,10,59);
+
+  const caseId=String(seed)
+    .slice(-6)
+    .padStart(6,"0");
+
+  let truth="";
+
+  if(mystery==="missing object"){
+
+    truth=
+      `The ${item} was never actually lost. `+
+      `${owner} deliberately hid it at ${place}. `+
+      `${contact} knew where it was.`;
+
+  }
+
+  if(mystery==="secret meeting"){
+
+    truth=
+      `${owner} secretly met ${contact} at ${place}. `+
+      `The trail pointing toward ${secondPlace} was deliberately created `+
+      `to make the meeting harder to discover.`;
+
+  }
+
+  if(mystery==="false alibi"){
+
+    truth=
+      `${owner} claimed to be at ${secondPlace}, `+
+      `but evidence places them at ${place}. `+
+      `${contact} helped maintain the false alibi.`;
+
+  }
+
+  if(mystery==="anonymous messages"){
+
+    truth=
+      `The anonymous messages are connected to ${contact}. `+
+      `The messages were created after ${owner} visited ${place}. `+
+      `${secondPlace} was used as a misleading trail.`;
+
+  }
+
+  CASE={
+    seed,
+    caseId,
+    owner,
+    contact,
+    job,
+    place,
+    secondPlace,
+    item,
+    password,
+    mystery,
+    day,
+    hour,
+    minute,
+    truth,
+    hintsUsed:0,
+    solved:false
+  };
+
+  updateCaseScreen();
+}
+
+/* ================= CASE SCREEN ================= */
+
+function updateCaseScreen(){
+
+  document.getElementById("ownerName").textContent=CASE.owner;
+
+  document.getElementById("ownerJob").textContent=CASE.job;
+
+  document.getElementById("caseId").textContent=
+    "#"+CASE.caseId;
+
+  document.getElementById("caseMystery").innerHTML=
+    `<strong>Mystery:</strong> ${CASE.mystery}<br><br>
+     🕵️ Investigate this PC carefully.`;
+
+}
+
+/* ================= GAME START ================= */
+
+function startGame(){
+
+  const seed=
+    Math.floor(Math.random()*4294967295);
+
+  generateCase(seed);
+
+  document.getElementById("titleScreen")
+    .classList.add("hidden");
+
+  document.getElementById("caseScreen")
+    .classList.remove("hidden");
+
+}
+
+function enterPC(){
+
+  document.getElementById("caseScreen")
+    .classList.add("hidden");
+
+  document.getElementById("desktop")
+    .classList.remove("hidden");
+
+  buildDesktop();
+
+  toast(
+    "CASE #"+CASE.caseId+
+    " loaded. Investigate everything."
+  );
+}
+
+/* ================= DESKTOP ================= */
+
+function buildDesktop(){
+
+  const area=document.getElementById("desktopApps");
+
+  area.innerHTML="";
+
+  apps.forEach(app=>{
+
+    const icon=document.createElement("div");
+
+    icon.className="appIcon";
+
+    icon.onclick=()=>openApp(app[0]);
+
+    icon.innerHTML=`
+      <div class="iconBox" style="background:${app[3]}">
+        ${app[1]}
+      </div>
+      <div class="appName">${app[2]}</div>
+    `;
+
+    area.appendChild(icon);
+
+  });
+}
+
+/* ================= WINDOW ================= */
+
+function openApp(name){
+
+  const win=document.getElementById("appWindow");
+  const title=document.getElementById("windowTitle");
+  const body=document.getElementById("windowBody");
+
+  win.classList.remove("hidden");
+
+  const app=apps.find(a=>a[0]===name);
+
+  title.textContent=app ? app[2] : "Application";
+
+  body.innerHTML="";
+
+  if(name==="documents") renderDocuments(body);
+  if(name==="browser") renderBrowser(body);
+  if(name==="messages") renderMessages(body);
+  if(name==="mail") renderMail(body);
+  if(name==="photos") renderPhotos(body);
+  if(name==="recycle") renderRecycle(body);
+  if(name==="vault") renderVault(body);
+  if(name==="notes") renderNotes(body);
+  if(name==="timeline") renderTimeline(body);
+  if(name==="investigation") renderInvestigation(body);
+}
+
+function closeWindow(){
+
+  document.getElementById("appWindow")
+    .classList.add("hidden");
+
+}
+
+/* ================= DOCUMENTS ================= */
+
+function renderDocuments(body){
+
+  body.innerHTML=`
+
+    <div class="card">
+      <h3>📄 personal.txt</h3>
+      <p class="muted">
+        Owner: ${CASE.owner}<br>
+        Occupation: ${CASE.job}
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>📄 plans.txt</h3>
+      <p>
+        Need to remember the ${CASE.item}.
+        <br><br>
+        Do not leave it somewhere obvious.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>📄 places.txt</h3>
+      <p>
+        ${CASE.place}<br>
+        ${CASE.secondPlace}
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>📄 password_hint.txt</h3>
+      <p>
+        The vault password is connected to:
+        <br><br>
+        <strong>${CASE.password}</strong>
+      </p>
+    </div>
+
+  `;
+}
+
+/* ================= BROWSER ================= */
+
+function renderBrowser(body){
+
+  body.innerHTML=`
+
+    <div class="card">
+      <h3>🌐 Search History</h3>
+      <p>how to hide a ${CASE.item}</p>
+      <p>best places near ${CASE.place}</p>
+      <p>${CASE.secondPlace} opening hours</p>
+      <p>private notes encryption</p>
+      <p>how to delete browser history</p>
+    </div>
+
+    <div class="card">
+      <h3>🔎 Recent Search</h3>
+      <p>
+        "${CASE.place} ${CASE.day} ${CASE.hour}:${String(CASE.minute).padStart(2,"0")}"
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>🌍 Visited Page</h3>
+      <p>
+        Local guide — ${CASE.place}
+      </p>
+    </div>
+
+  `;
+}
+
+/* ================= MESSAGES ================= */
+
+
+function renderMessages(body){
+
+  const people = [
+    {
+      name: CASE.contact,
+      emoji: "🕵️",
+      important: true,
+      messages: [
+        {
+          text: "You shouldn't be looking through this computer.",
+          options: [
+            "Where were you that night?",
+            "What are you talking about?",
+            "Tell me about " + CASE.place
+          ]
+        },
+        {
+          text: "I don't know anything about " + CASE.item + ".",
+          options: [
+            "Then why did you mention it?",
+            "Who does know?",
+            "Fine. Forget it."
+          ]
+        }
+      ]
+    },
+    {
+      name: "Rohan",
+      emoji: "😎",
+      important: false,
+      messages: [{
+        text: "bro did you finish that assignment 💀",
+        options: ["Not yet","Yeah, finally","Which assignment?"]
+      }]
+    },
+    {
+      name: "Nisha",
+      emoji: "🌸",
+      important: false,
+      messages: [{
+        text: "Are you coming tomorrow?",
+        options: ["Probably","No idea","Why?"]
+      }]
+    },
+    {
+      name: "Sam",
+      emoji: "🎮",
+      important: false,
+      messages: [{
+        text: "That game update destroyed everything 😭",
+        options: ["FR","Skill issue","What happened?"]
+      }]
+    },
+    {
+      name: "Alex",
+      emoji: "👤",
+      important: false,
+      messages: [{
+        text: "Did you hear about what happened near " + CASE.secondPlace + "?",
+        options: ["No. What happened?","Yeah.","Why are you asking?"]
+      }]
+    },
+    {
+      name: "Mira",
+      emoji: "📚",
+      important: false,
+      messages: [{
+        text: "Can you send me the notes?",
+        options: ["Sure","Which ones?","Later"]
+      }]
+    }
+  ];
+
+  window.currentPeople = people;
+
+  body.innerHTML = `
+    <div class="card">
+      <h3>💬 Messages</h3>
+      <p class="muted">Choose a conversation.</p>
+    </div>
+
+    <div id="chatList"></div>
+
+    <div class="card">
+      <h3>✍️ Send a Message</h3>
+
+      <select id="messagePerson" class="input">
+        ${people.map((p,i)=>`
+          <option value="${i}">
+            ${p.emoji} ${p.name}
+          </option>
+        `).join("")}
+      </select>
+
+      <input id="manualMessage"
+        class="input"
+        placeholder="Type a message...">
+
+      <button class="actionBtn"
+        onclick="sendManualMessage()">
+        SEND
+      </button>
+
+      <div id="manualReply"></div>
+    </div>
+  `;
+
+  const list = document.getElementById("chatList");
+
+  people.forEach((person,index)=>{
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <h3>${person.emoji} ${person.name}</h3>
+      <button class="actionBtn"
+        onclick="openChat(${index})">
+        OPEN CHAT
+      </button>
+    `;
+
+    list.appendChild(card);
+  });
+}
+
+
+function openChat(index){
+
+  const person = window.currentPeople[index];
+  const body = document.getElementById("windowBody");
+
+  let chat = "";
+
+  person.messages.forEach((msg,msgIndex)=>{
+    chat += `
+      <div class="message">
+        <div class="who">${person.emoji} ${person.name}</div>
+        ${msg.text}
+      </div>
+
+      <div class="card">
+        <strong>Reply:</strong><br><br>
+
+        ${msg.options.map((option,i)=>`
+          <button class="actionBtn"
+            onclick="chatReply(${index},${msgIndex},${i})">
+            ${option}
+          </button>
+        `).join("")}
+      </div>
+    `;
+  });
+
+  body.innerHTML = `
+    <div class="card">
+      <h3>${person.emoji} ${person.name}</h3>
+      <p class="muted">Conversation</p>
+    </div>
+
+    <div id="chatConversation">
+      ${chat}
+    </div>
+
+    <button class="actionBtn dark"
+      onclick="openApp('messages')">
+      ← BACK
+    </button>
+  `;
+}
+
+
+function chatReply(personIndex,msgIndex,optionIndex){
+
+  const person = window.currentPeople[personIndex];
+  const msg = person.messages[msgIndex];
+  const selected = msg.options[optionIndex];
+
+  let reply = "";
+
+  if(person.important){
+
+    const lower = selected.toLowerCase();
+
+    if(lower.includes(CASE.place.toLowerCase())){
+      reply = `Why do you know about ${CASE.place}?`;
+    }else if(lower.includes("know")){
+      reply = `Don't drag ${CASE.contact} into this.`;
+    }else{
+      reply = `Stop asking questions.`;
+    }
+
+  }else{
+
+    const replies = [
+      "lol",
+      "sure 😂",
+      "idk bro",
+      "I'll send it later",
+      "wait what",
+      "HAHA",
+      "probably",
+      "ok",
+      "fair enough",
+      "💀",
+      "nah",
+      "bruh"
+    ];
+
+    reply = replies[Math.floor(Math.random()*replies.length)];
+  }
+
+  const conversation =
+    document.getElementById("chatConversation");
+
+  conversation.innerHTML += `
+    <div class="message">
+      <div class="who">You</div>
+      ${selected}
+    </div>
+
+    <div class="message">
+      <div class="who">${person.emoji} ${person.name}</div>
+      ${reply}
+    </div>
+  `;
+}
+
+
+function sendManualMessage(){
+
+  const input = document.getElementById("manualMessage");
+  const select = document.getElementById("messagePerson");
+  const replyBox = document.getElementById("manualReply");
+
+  const text = input.value.trim();
+
+  if(!text){
+    replyBox.innerHTML = `
+      <div class="hint">Type something first.</div>
+    `;
+    return;
+  }
+
+  const person =
+    window.currentPeople[Number(select.value)];
+
+  const lower = text.toLowerCase();
+
+  let reply;
+
+  if(person.important){
+
+    if(lower.includes(CASE.place.toLowerCase())){
+      reply = `Why do you know about ${CASE.place}?`;
+
+    }else if(lower.includes(CASE.item.toLowerCase())){
+      reply = `I already told you. I don't know anything about that.`;
+
+    }else if(lower.includes(CASE.contact.toLowerCase())){
+      reply = `Don't mention other people.`;
+
+    }else{
+      reply = `I don't have anything to say about that.`;
+    }
+
+  }else{
+
+    const replies = [
+      "lol what",
+      "sure",
+      "idk 😂",
+      "okay",
+      "bro what",
+      "I'll tell you later",
+      "nah",
+      "wait",
+      "💀",
+      "fair"
+    ];
+
+    reply = replies[Math.floor(Math.random()*replies.length)];
+  }
+
+  replyBox.innerHTML += `
+    <div class="message">
+      <div class="who">You</div>
+      ${text}
+    </div>
+
+    <div class="message">
+      <div class="who">${person.emoji} ${person.name}</div>
+      ${reply}
+    </div>
+  `;
+
+  input.value = "";
+}
+
+function renderMail(body){
+
+  body.innerHTML=`
+
+    <div class="mail">
+      <strong>From: ${CASE.contact}</strong>
+      <p>
+        Subject: Tonight
+        <br><br>
+        Everything is arranged.
+        Don't use the obvious route.
+      </p>
+    </div>
+
+    <div class="mail">
+      <strong>From: ${CASE.owner}</strong>
+      <p>
+        Subject: Reminder
+        <br><br>
+        Remember what we discussed at ${CASE.place}.
+      </p>
+    </div>
+
+    <div class="mail">
+      <strong>From: unknown@localmail</strong>
+      <p>
+        Subject: You shouldn't have searched for this.
+      </p>
+    </div>
+
+  `;
+}
+
+/* ================= PHOTOS ================= */
+
+function renderPhotos(body){
+
+  body.innerHTML=`
+
+    <div class="photoGrid">
+
+      <div class="photo">
+        📍<br>${CASE.place}
+      </div>
+
+      <div class="photo">
+        🌆<br>${CASE.secondPlace}
+      </div>
+
+      <div class="photo">
+        🔑<br>${CASE.item}
+      </div>
+
+      <div class="photo">
+        🕒<br>${CASE.day} / ${CASE.hour}:${String(CASE.minute).padStart(2,"0")}
+      </div>
+
+      <div class="photo">
+        👤<br>${CASE.contact}
+      </div>
+
+      <div class="photo">
+        🖥️<br>Desk photograph
+      </div>
+
+    </div>
+
+  `;
+}
+
+/* ================= RECYCLE BIN ================= */
+
+function renderRecycle(body){
+
+  body.innerHTML=`
+
+    <div class="card">
+      <h3>🗑️ deleted_note.txt</h3>
+      <p>
+        If anyone asks, I was at ${CASE.secondPlace}.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>🗑️ old_message.txt</h3>
+      <p>
+        ${CASE.contact}: Delete this conversation later.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>🗑️ map_old.png</h3>
+      <p>
+        A route connecting ${CASE.place}
+        and ${CASE.secondPlace}.
+      </p>
+    </div>
+
+  `;
+}
+
+/* ================= VAULT ================= */
+
+function renderVault(body){
+
+  body.innerHTML=`
+
+    <div class="card">
+      <h3>🔐 PRIVATE VAULT</h3>
+
+      <p class="muted">
+        Enter the password discovered in the computer.
+      </p>
+
+      <input
+        id="vaultInput"
+        class="input"
+        placeholder="Password"
+      >
+
+      <button
+        class="actionBtn"
+        onclick="unlockVault()"
+      >
+        UNLOCK
+      </button>
+
+      <div id="vaultResult"></div>
+    </div>
+
+  `;
+}
+
+function unlockVault(){
+
+  const value=
+    document.getElementById("vaultInput")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const result=
+    document.getElementById("vaultResult");
+
+  if(value===CASE.password.toLowerCase()){
+
+    result.innerHTML=`
+
+      <div class="answerBox">
+        <h3>🔓 Vault Unlocked</h3>
+        <br>
+        Meeting reference:
+        <strong>${CASE.place}</strong>
+        <br><br>
+        Contact:
+        <strong>${CASE.contact}</strong>
+        <br><br>
+        Object:
+        <strong>${CASE.item}</strong>
+      </div>
+
+    `;
+
+    toast("Vault unlocked.");
+
+  }else{
+
+    result.innerHTML=`
+      <div class="hint">
+        ❌ Incorrect password.
+      </div>
+    `;
+
+  }
+}
+
+/* ================= NOTES ================= */
+
+function renderNotes(body){
+
+  body.innerHTML=`
+
+    <div class="card">
+      <h3>📝 Sticky Note</h3>
+      <p>
+        ${CASE.item} → don't forget.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>📝 Reminder</h3>
+      <p>
+        ${CASE.place}<br>
+        ${CASE.day}/${CASE.hour}:${String(CASE.minute).padStart(2,"0")}
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>📝 Strange Note</h3>
+      <p>
+        ${CASE.contact} knows.
+      </p>
+    </div>
+
+  `;
+}
+
+/* ================= TIMELINE ================= */
+
+function renderTimeline(body){
+
+  body.innerHTML=`
+
+    <div class="timelineItem">
+      <strong>16:20</strong><br>
+      ${CASE.owner} opened the computer.
+    </div>
+
+    <div class="timelineItem">
+      <strong>${CASE.hour}:${String(CASE.minute).padStart(2,"0")}</strong><br>
+      Activity connected to ${CASE.place}.
+    </div>
+
+    <div class="timelineItem">
+      <strong>${CASE.hour+1}:10</strong><br>
+      Message exchanged with ${CASE.contact}.
+    </div>
+
+    <div class="timelineItem">
+      <strong>${CASE.hour+2}:05</strong><br>
+      A suspicious file was deleted.
+    </div>
+
+    <div class="timelineItem">
+      <strong>23:48</strong><br>
+      Computer was shut down.
+    </div>
+
+  `;
+}</script>
+<script>
+/* =========================================================
+   FOUND: PC
+   SEGMENT 3
+   INVESTIGATION + HINTS + CONTROLS
+   ========================================================= */
+
+/* ================= INVESTIGATION ================= */
+
+function renderInvestigation(body){
+
+  body.innerHTML=`
+
+    <div class="card">
+      <h3>🕵️ Investigation Board</h3>
+
+      <p class="muted">
+        Build your theory from the evidence.
+      </p>
+
+      <br>
+
+      <button
+        class="actionBtn"
+        onclick="showHint()"
+      >
+        💡 HINT
+      </button>
+
+      <button
+        class="actionBtn pink"
+        onclick="showAnswer()"
+      >
+        🔎 REVEAL ANSWER
+      </button>
+
+      <button
+        class="actionBtn green"
+        onclick="showDeduction()"
+      >
+        🧠 DEDUCTION
+      </button>
+
+      <div id="investigationContent"></div>
+    </div>
+
+    <div class="card">
+      <h3>CASE DATA</h3>
+
+      <p>
+        Owner:
+        <strong>${CASE.owner}</strong>
+      </p>
+
+      <p>
+        Occupation:
+        <strong>${CASE.job}</strong>
+      </p>
+
+      <p>
+        Mystery:
+        <strong>${CASE.mystery}</strong>
+      </p>
+
+      <p>
+        Case:
+        <strong>#${CASE.caseId}</strong>
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>CASE CONTROLS</h3>
+
+      <button
+        class="actionBtn dark"
+        onclick="newCase()"
+      >
+        🔄 NEW CASE
+      </button>
+
+      <button
+        class="actionBtn dark"
+        onclick="loadSeedPrompt()"
+      >
+        🔢 LOAD SEED
+      </button>
+    </div>
+
+  `;
+}
+
+/* ================= HINTS ================= */
+
+function showHint(){
+
+  CASE.hintsUsed++;
+
+  let hint="";
+
+  if(CASE.hintsUsed===1){
+
+    hint=
+      `Start with the messages. ${CASE.contact} appears more important than the other contacts.`;
+
+  }else if(CASE.hintsUsed===2){
+
+    hint=
+      `Compare ${CASE.place} with ${CASE.secondPlace}. One of them is connected to the real story.`;
+
+  }else if(CASE.hintsUsed===3){
+
+    hint=
+      `Check the timeline and deleted files. They reveal information that the normal apps try to hide.`;
+
+  }else{
+
+    hint=
+      `The strongest evidence points toward ${CASE.place} and ${CASE.contact}.`;
+
+  }
+
+  const box=
+    document.getElementById("investigationContent");
+
+  if(box){
+
+    box.innerHTML+=`
+      <div class="hint">
+        <strong>Hint ${CASE.hintsUsed}</strong><br>
+        ${hint}
+      </div>
+    `;
+
+  }
+
+}
+
+/* ================= DEDUCTION ================= */
+
+function showDeduction(){
+
+  const box=
+    document.getElementById("investigationContent");
+
+  if(!box) return;
+
+  box.innerHTML=`
+
+    <div class="card">
+      <h3>🧠 What do you think happened?</h3>
+
+      <p class="muted">
+        Choose the evidence category that seems most important.
+      </p>
+
+      <br>
+
+      <div class="deductionGrid">
+
+        <div
+          class="deductionOption"
+          onclick="deductionResult('messages')"
+        >
+          💬 Messages
+        </div>
+
+        <div
+          class="deductionOption"
+          onclick="deductionResult('locations')"
+        >
+          📍 Locations
+        </div>
+
+        <div
+          class="deductionOption"
+          onclick="deductionResult('files')"
+        >
+          📁 Deleted Files
+        </div>
+
+        <div
+          class="deductionOption"
+          onclick="deductionResult('timeline')"
+        >
+          🕒 Timeline
+        </div>
+
+      </div>
+
+      <div id="deductionResult"></div>
+    </div>
+
+  `;
+
+}
+
+function deductionResult(type){
+
+  let text="";
+
+  if(type==="messages"){
+
+    text=
+      `${CASE.contact} repeatedly appears in the evidence.`;
+
+  }
+
+  if(type==="locations"){
+
+    text=
+      `${CASE.place} and ${CASE.secondPlace} are deliberately contrasted.`;
+
+  }
+
+  if(type==="files"){
+
+    text=
+      `Deleted material contains information that contradicts the surface story.`;
+
+  }
+
+  if(type==="timeline"){
+
+    text=
+      `The timing connects the computer activity with the central event.`;
+
+  }
+
+  document.getElementById("deductionResult").innerHTML=`
+
+    <div class="hint">
+      <strong>Observation:</strong><br>
+      ${text}
+    </div>
+
+  `;
+
+}
+
+/* ================= ANSWER ================= */
+
+function showAnswer(){
+
+  CASE.solved=true;
+
+  const box=
+    document.getElementById("investigationContent");
+
+  if(!box) return;
+
+  box.innerHTML=`
+
+    <div class="answerBox">
+
+      <h2>🔎 CASE SOLVED</h2>
+
+      <br>
+
+      <p>
+        ${CASE.truth}
+      </p>
+
+      <br>
+
+      <p class="muted">
+        Case #${CASE.caseId}
+      </p>
+
+    </div>
+
+    <br>
+
+    <button
+      class="actionBtn green"
+      onclick="newCase()"
+    >
+      🔄 GENERATE NEW CASE
+    </button>
+
+  `;
+
+  toast("Case #"+CASE.caseId+" solved.");
+
+}
+
+/* ================= NEW CASE ================= */
+
+function newCase(){
+
+  const seed=
+    Math.floor(Math.random()*4294967295);
+
+  generateCase(seed);
+
+  closeWindow();
+
+  document.getElementById("desktop")
+    .classList.add("hidden");
+
+  document.getElementById("caseScreen")
+    .classList.remove("hidden");
+
+  toast("New case generated.");
+
+}
+
+/* ================= LOAD SEED ================= */
+
+function loadSeedPrompt(){
+
+  const value=
+    prompt(
+      "Enter a numeric case seed:"
+    );
+
+  if(value===null) return;
+
+  const seed=
+    Number(value);
+
+  if(!Number.isFinite(seed)){
+
+    alert("That is not a valid numeric seed.");
+
+    return;
+  }
+
+  generateCase(seed>>>0);
+
+  closeWindow();
+
+  document.getElementById("desktop")
+    .classList.add("hidden");
+
+  document.getElementById("caseScreen")
+    .classList.remove("hidden");
+
+}
+
+/* ================= HOW TO PLAY ================= */
+
+function showHowToPlay(){
+
+  document.getElementById("howModal")
+    .classList.remove("hidden");
+
+}
+
+function hideHowToPlay(){
+
+  document.getElementById("howModal")
+    .classList.add("hidden");
+
+}
+
+/* ================= CLOCK ================= */
+
+function updateClock(){
+
+  const now=new Date();
+
+  const h=
+    String(now.getHours()).padStart(2,"0");
+
+  const m=
+    String(now.getMinutes()).padStart(2,"0");
+
+  const s=
+    String(now.getSeconds()).padStart(2,"0");
+
+  const clock=
+    document.getElementById("clock");
+
+  if(clock){
+
+    clock.textContent=
+      `${h}:${m}:${s}`;
+
+  }
+
+}
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+/* ================= TOAST ================= */
+
+let toastTimer=null;
+
+function toast(message){
+
+  const element=
+    document.getElementById("toast");
+
+  if(!element) return;
+
+  element.textContent=message;
+
+  element.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer=setTimeout(()=>{
+
+    element.classList.remove("show");
+
+  },2500);
+
+}
+
+/* ================= KEYBOARD ================= */
+
+document.addEventListener("keydown",function(e){
+
+  if(e.key==="Escape"){
+
+    closeWindow();
+
+    hideHowToPlay();
+
+  }
+
+});
+
+/* ================= DEBUG ================= */
+
+console.log(
+  "%cFOUND: PC loaded.",
+  "color:#7c8cff;font-weight:bold;font-size:16px"
+);
+
+console.log(
+  "Procedural mystery engine ready."
+);
+
+</script>
+
+</body>
+</html>
+
